@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - DineEase</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{navbar :: navbar}"></div>
+
+    <main class="container">
+        <section class="section-title-container" style="text-align: left; margin-bottom: 2rem;">
+            <h1 class="section-title">My Booking Cart</h1>
+            <p class="section-subtitle">Manage pre-ordered dishes before checking out.</p>
+        </section>
+
+        <!-- Cart Grid Layout -->
+        <div class="cart-grid">
+            <!-- Left Side Cart Items List -->
+            <div class="cart-items-container" id="cartContainer">
+                <div style="text-align: center; padding: 2rem;">Loading cart items...</div>
+            </div>
+
+            <!-- Right Side Cart Calculations Summary -->
+            <aside class="cart-summary-card">
+                <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem;">Summary</h3>
+                
+                <div class="summary-row">
+                    <span>Restaurant</span>
+                    <span id="cartRestaurantName" style="font-weight: 700; color: var(--primary-color);">Dine-In Restaurant</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal">₹0.00</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Est. Prep Time</span>
+                    <span id="cartPrepTime" style="font-weight: 700;">15 mins</span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span>Grand Total</span>
+                    <span id="cartGrandTotal">₹0.00</span>
+                </div>
+
+                <br>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a href="/checkout-page" id="checkoutBtn" class="btn btn-primary" style="text-align: center; width: 100%; display: none;">Proceed to Booking</a>
+                    <button id="clearCartBtn" class="btn btn-secondary" style="width: 100%; display: none;">Clear All Items</button>
+                    <a href="/restaurants-page" class="btn btn-secondary" style="text-align: center; width: 100%;">Add More Dishes</a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="~{footer :: footer}"></div>
+
+    <!-- Scripts -->
+    <script th:src="@{/js/auth.js}"></script>
+    <script th:src="@{/js/cart.js}"></script>
+</body>
+</html>

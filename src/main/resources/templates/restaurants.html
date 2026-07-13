@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Restaurants - DineEase</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/restaurant.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{navbar :: navbar}"></div>
+
+    <main class="container">
+        <!-- Title Header -->
+        <section class="section-title-container" style="text-align: left; margin-bottom: 2rem;">
+            <h1 class="section-title">Explore Dine-In Restaurants</h1>
+            <p class="section-subtitle">Select your favorite restaurant and pre-order your meals before leaving home.</p>
+        </section>
+
+        <!-- Search and Filters Box -->
+        <section class="filter-wrapper">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchRestaurant" class="form-input" placeholder="Search by name or cuisine...">
+            </div>
+
+            <!-- Cuisine pills -->
+            <div class="cuisine-filters">
+                <button class="cuisine-btn active" data-cuisine="All">All Cuisines</button>
+                <button class="cuisine-btn" data-cuisine="Chinese">Chinese</button>
+                <button class="cuisine-btn" data-cuisine="Italian">Italian</button>
+                <button class="cuisine-btn" data-cuisine="Indian">Indian</button>
+                <button class="cuisine-btn" data-cuisine="Fast Food">Fast Food</button>
+                <button class="cuisine-btn" data-cuisine="Dessert">Dessert</button>
+            </div>
+        </section>
+
+        <!-- Restaurants List Grid -->
+        <section class="restaurants-grid" id="restaurantList">
+            <!-- Dynamically populated by restaurant.js -->
+            <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">Loading restaurants...</div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="~{footer :: footer}"></div>
+
+    <!-- Scripts -->
+    <script th:src="@{/js/auth.js}"></script>
+    <script th:src="@{/js/restaurant.js}"></script>
+</body>
+</html>

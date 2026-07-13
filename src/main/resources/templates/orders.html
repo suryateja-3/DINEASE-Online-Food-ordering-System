@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - DineEase</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/orders.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{navbar :: navbar}"></div>
+
+    <main class="container" style="max-width: 850px;">
+        <section class="section-title-container" style="text-align: left; margin-bottom: 2.5rem;">
+            <h1 class="section-title">My Dine-In Bookings</h1>
+            <p class="section-subtitle">Track prep status of your dine-in reservations in real-time.</p>
+        </section>
+
+        <!-- Orders list container -->
+        <div class="orders-list" id="orderContainer">
+            <div style="text-align: center; padding: 2rem;">Loading pre-orders...</div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="~{footer :: footer}"></div>
+
+    <!-- Scripts -->
+    <script th:src="@{/js/auth.js}"></script>
+    <script th:src="@{/js/orders.js}"></script>
+</body>
+</html>

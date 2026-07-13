@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu - DineEase</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/restaurant.css}">
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{navbar :: navbar}"></div>
+
+    <main class="container">
+        <!-- Restaurant Details Header Hero -->
+        <section class="restaurant-detail-hero animate-fade-in">
+            <div class="restaurant-detail-info">
+                <span id="restaurantCuisineHeader" class="restaurant-cuisine">Cuisine</span>
+                <h1 id="restaurantNameHeader" style="margin-top: 0.5rem;">Restaurant Name</h1>
+                <div id="restaurantRatingHeader" style="color: #f59e0b; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;">⭐ 0.0</div>
+                <div class="restaurant-details-list" style="border-top: none; padding-top: 0;">
+                    <div id="restaurantAddressHeader" class="restaurant-details-item">📍 Address</div>
+                    <div id="restaurantTimingsHeader" class="restaurant-details-item">🕒 Opening - Closing</div>
+                </div>
+            </div>
+            <div class="restaurant-detail-image-box">
+                <img id="restaurantImageHeader" src="" alt="Restaurant Image" onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=500&q=80'">
+            </div>
+        </section>
+
+        <!-- Menu and Categories Layout -->
+        <div class="menu-container">
+            <!-- Left Sidebar Categories -->
+            <aside class="category-sidebar">
+                <h3 class="category-title">Categories</h3>
+                <ul class="category-list">
+                    <li class="category-item active" data-category="All">All Dishes</li>
+                    <li class="category-item" data-category="Starter">Starters</li>
+                    <li class="category-item" data-category="Main Course">Main Course</li>
+                    <li class="category-item" data-category="Dessert">Desserts</li>
+                    <li class="category-item" data-category="Beverage">Beverages</li>
+                </ul>
+            </aside>
+
+            <!-- Right side Food Grid -->
+            <section style="flex: 1;">
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <div class="search-box" style="max-width: 100%;">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchFood" class="form-input" placeholder="Search dishes by name...">
+                    </div>
+                </div>
+
+                <div class="foods-grid" id="foodContainer">
+                    <!-- Dynamically populated by menu.js -->
+                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">Loading dishes...</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="~{footer :: footer}"></div>
+
+    <!-- Scripts -->
+    <script th:src="@{/js/auth.js}"></script>
+    <script th:src="@{/js/menu.js}"></script>
+</body>
+</html>

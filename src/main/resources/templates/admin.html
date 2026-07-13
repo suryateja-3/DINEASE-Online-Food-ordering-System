@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - DineEase</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{navbar :: navbar}"></div>
+
+    <main class="admin-container">
+        <!-- Title Page -->
+        <section class="section-title-container" style="text-align: left; margin-bottom: 2rem;">
+            <h1 class="section-title">Administrative Dashboard</h1>
+            <p class="section-subtitle">Oversee dining operations, menu management, user registrations, and order logs.</p>
+        </section>
+
+        <!-- Stats Grid Panel -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statUsers">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🍽️</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statRestaurants">0</div>
+                    <div class="stat-label">Restaurants</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🍔</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statFoods">0</div>
+                    <div class="stat-label">Food Items</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statOrders">0</div>
+                    <div class="stat-label">Pre-Orders</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💳</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statPayments">0</div>
+                    <div class="stat-label">Payments</div>
+                </div>
+            </div>
+            <div class="stat-card" style="border-color: var(--primary-color); background-color: rgba(255,87,34,0.02);">
+                <div class="stat-icon" style="background-color: var(--primary-color); color: white;">💰</div>
+                <div class="stat-info">
+                    <div class="stat-value" id="statRevenue">₹0.00</div>
+                    <div class="stat-label" style="color: var(--primary-color);">Total Revenue</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Tab Links -->
+        <section class="admin-tabs">
+            <button class="admin-tab-btn active" data-panel="panelRestaurants">Restaurants</button>
+            <button class="admin-tab-btn" data-panel="panelFoods">Food Menu</button>
+            <button class="admin-tab-btn" data-panel="panelUsers">Diners List</button>
+            <button class="admin-tab-btn" data-panel="panelOrders">Dine-In Orders</button>
+            <button class="admin-tab-btn" data-panel="panelPayments">Payment Ledger</button>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- RESTAURANTS PANEL -->
+        <!-- ============================================== -->
+        <section class="admin-panel active" id="panelRestaurants">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Manage Restaurants</h2>
+                <button class="btn btn-primary" onclick="showAddRestaurantModal()">➕ Add Restaurant</button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Cuisine</th>
+                            <th>Timings</th>
+                            <th>Phone</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminRestaurantList">
+                        <!-- Populated by admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- FOOD PANEL -->
+        <!-- ============================================== -->
+        <section class="admin-panel" id="panelFoods">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>Manage Food Items</h2>
+                <button class="btn btn-primary" onclick="showAddFoodModal()">➕ Add Food Item</button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock Qty</th>
+                            <th>Available</th>
+                            <th>Restaurant</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminFoodList">
+                        <!-- Populated by admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- USERS PANEL -->
+        <!-- ============================================== -->
+        <section class="admin-panel" id="panelUsers">
+            <h2 style="margin-bottom: 1.5rem;">Diners List</h2>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUserList">
+                        <!-- Populated by admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- ORDERS PANEL -->
+        <!-- ============================================== -->
+        <section class="admin-panel" id="panelOrders">
+            <h2 style="margin-bottom: 1.5rem;">Dine-In Bookings List</h2>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Restaurant</th>
+                            <th>Items Summary</th>
+                            <th>Amount</th>
+                            <th>Arrival Time</th>
+                            <th>Status Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminOrderList">
+                        <!-- Populated by admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- PAYMENTS PANEL -->
+        <!-- ============================================== -->
+        <section class="admin-panel" id="panelPayments">
+            <h2 style="margin-bottom: 1.5rem;">Payment Logs Ledger</h2>
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Order ID</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminPaymentList">
+                        <!-- Populated by admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================== -->
+    <!-- MODAL FOR ADD/EDIT RESTAURANT -->
+    <!-- ============================================== -->
+    <div class="modal-overlay" id="restaurantModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="restaurantModalTitle">Add Restaurant</h3>
+                <button class="modal-close" onclick="toggleModal('restaurantModal', false)">&times;</button>
+            </div>
+            <form id="restaurantForm" onsubmit="event.preventDefault(); submitRestaurantForm();">
+                <input type="hidden" id="restaurantIdField">
+                
+                <div class="form-group">
+                    <label class="form-label">Restaurant Name</label>
+                    <input type="text" id="restName" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Owner Name</label>
+                    <input type="text" id="restOwner" class="form-input" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="restEmail" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="text" id="restPhone" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <input type="text" id="restAddress" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Cuisine Category</label>
+                    <input type="text" id="restCuisine" class="form-input" placeholder="e.g. Chinese, Fast Food" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Opening Time</label>
+                        <input type="text" id="restOpen" class="form-input" placeholder="e.g. 09:00 AM" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Closing Time</label>
+                        <input type="text" id="restClose" class="form-input" placeholder="e.g. 10:00 PM" required>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Rating Value</label>
+                        <input type="number" id="restRating" class="form-input" min="1.0" max="5.0" step="0.1" value="4.0" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Image URL</label>
+                        <input type="text" id="restImage" class="form-input" placeholder="https://unsplash.com/...">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Restaurant</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- MODAL FOR ADD/EDIT FOOD ITEM -->
+    <!-- ============================================== -->
+    <div class="modal-overlay" id="foodModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="foodModalTitle">Add Food Item</h3>
+                <button class="modal-close" onclick="toggleModal('foodModal', false)">&times;</button>
+            </div>
+            <form id="foodForm" onsubmit="event.preventDefault(); submitFoodForm();">
+                <input type="hidden" id="foodIdField">
+                
+                <div class="form-group">
+                    <label class="form-label">Food Name</label>
+                    <input type="text" id="foodNameField" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" id="foodDesc" class="form-input" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Category</label>
+                        <select id="foodCategory" required>
+                            <option value="Starter">Starter</option>
+                            <option value="Main Course">Main Course</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Beverage">Beverage</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Restaurant Owner</label>
+                        <select id="foodRest" required>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Price (₹)</label>
+                        <input type="number" id="foodPrice" class="form-input" min="1.0" step="0.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Available Qty</label>
+                        <input type="number" id="foodQty" class="form-input" min="1" value="50" required>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Preparation Time (mins)</label>
+                        <input type="number" id="foodPrep" class="form-input" min="5" value="15" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Availability</label>
+                        <select id="foodAvail" required>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Image URL</label>
+                    <input type="text" id="foodImage" class="form-input" placeholder="https://unsplash.com/...">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Food Item</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{footer :: footer}"></div>
+
+    <!-- Scripts -->
+    <script th:src="@{/js/auth.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
+</body>
+</html>

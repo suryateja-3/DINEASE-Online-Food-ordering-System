@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - DineEase</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/payment.css}">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div th:replace="~{navbar :: navbar}"></div>
+
+    <main class="container payment-container">
+        <section class="section-title-container" style="text-align: left; margin-bottom: 2rem;">
+            <h1 class="section-title">Select Payment Mode</h1>
+            <p class="section-subtitle">Confirm transaction details below to verify your booking.</p>
+        </section>
+
+        <!-- Payment selector tabs -->
+        <section class="payment-options-grid">
+            <div class="payment-tab active" data-mode="upi">
+                <span class="payment-tab-icon">📱</span>
+                <span>UPI Payment</span>
+            </div>
+            <div class="payment-tab" data-mode="card">
+                <span class="payment-tab-icon">💳</span>
+                <span>Credit / Debit</span>
+            </div>
+            <div class="payment-tab" data-mode="cash">
+                <span class="payment-tab-icon">🍽️</span>
+                <span>Pay at Restaurant</span>
+            </div>
+        </section>
+
+        <!-- Payment processing box form -->
+        <div class="glass-card animate-fade-in">
+            <form id="paymentForm">
+                <!-- Pre-filled metadata read-only fields -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Order ID</label>
+                        <input type="number" id="orderId" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Payable Amount</label>
+                        <input type="number" id="amount" class="form-input" required>
+                    </div>
+                </div>
+
+                <!-- Hidden paymentMethod selector mapped to dropdown -->
+                <select id="paymentMethod" style="display: none;">
+                    <option value="UPI">UPI</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Cash at Restaurant">Cash at Restaurant</option>
+                </select>
+
+                <!-- UPI Panel -->
+                <div class="payment-form-box active" id="upiForm">
+                    <h3 style="margin-bottom: 1rem;">Enter UPI Credentials</h3>
+                    
+                    <div class="upi-qr-placeholder">
+                        <div class="qr-mock">QR CODE</div>
+                        <p style="font-size: 0.82rem; color: var(--text-muted);">Scan this QR code using BHIM, GPay, PhonePe, or Paytm</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="upiId">Or Enter UPI ID</label>
+                        <input type="text" id="upiId" class="form-input" placeholder="username@upi">
+                    </div>
+                </div>
+
+                <!-- Card Panel -->
+                <div class="payment-form-box" id="cardForm">
+                    <h3 style="margin-bottom: 1rem;">Card Details</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" class="form-input" placeholder="4532 9821 7654 3210" maxlength="19">
+                    </div>
+
+                    <div class="card-expiry-cvv">
+                        <div class="form-group">
+                            <label class="form-label" for="cardExpiry">Expiration Date</label>
+                            <input type="text" id="cardExpiry" class="form-input" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cardCvv">CVV Code</label>
+                            <input type="password" id="cardCvv" class="form-input" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cash Panel -->
+                <div class="payment-form-box" id="cashForm">
+                    <h3 style="margin-bottom: 1rem;">Confirm Cash Booking</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem;">
+                        You will pay directly at the restaurant counter upon arrival. Please ensure you reach the venue on time as prepared meals can only be held hot for up to 30 minutes past your booking.
+                    </p>
+                </div>
+
+                <br>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1.05rem;">Confirm & Pay Now</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="~{footer :: footer}"></div>
+
+    <!-- Scripts -->
+    <script th:src="@{/js/auth.js}"></script>
+    <script th:src="@{/js/payment.js}"></script>
+</body>
+</html>

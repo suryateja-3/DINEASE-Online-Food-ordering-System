@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header class="navbar-header" th:fragment="navbar">
+    <div class="navbar-container">
+        <a th:href="@{/}" class="navbar-logo">
+            <span>🍽️</span> DineEase
+        </a>
+        
+        <nav class="navbar-links">
+            <a th:href="@{/}" class="navbar-link">Home</a>
+            <a th:href="@{/restaurants-page}" class="navbar-link">Restaurants</a>
+            <a th:href="@{/cart-page}" class="navbar-link">Cart</a>
+            <a th:href="@{/orders-page}" class="navbar-link">My Orders</a>
+        </nav>
+
+        <div id="authLinks" class="navbar-user">
+            <!-- Dynamically populated by auth.js -->
+            <a th:href="@{/login-page}" class="navbar-link">Login</a>
+            <a th:href="@{/register-page}" class="navbar-link btn btn-primary" style="color: white; padding: 0.4rem 1rem;">Register</a>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>
