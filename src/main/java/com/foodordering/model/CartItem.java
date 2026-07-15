@@ -22,4 +22,5 @@ public class CartItem {
     private Integer quantity;
     private Double totalPrice;
     private Long restaurantId;
+    private String customizations;
 }

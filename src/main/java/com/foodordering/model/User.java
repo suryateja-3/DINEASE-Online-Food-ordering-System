@@ -28,4 +28,13 @@ public class User {
     private String password;
 
     private String role = "USER"; // USER or ADMIN
+
+    private Double totalPenalty = 0.0;
+
+    private Boolean suspended = false;
+
+    private String referralCode;
+    private String referredByCode;
+    private Double walletBalance = 0.0;
+    private Boolean firstOrderCompleted = false;
 }

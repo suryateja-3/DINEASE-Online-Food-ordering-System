@@ -19,11 +19,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         // 1. Admin Page Protection
         if (uri.startsWith("/admin-page")) {
             if (currentUser == null) {
-                response.sendRedirect("/login-page");
+                response.sendRedirect("/admin-login");
                 return false;
             }
             if (!"ADMIN".equalsIgnoreCase(currentUser.getRole())) {
-                response.sendRedirect("/");
+                response.sendRedirect("/admin-login");
                 return false;
             }
             return true;

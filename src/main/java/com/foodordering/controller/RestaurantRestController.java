@@ -1,8 +1,12 @@
 package com.foodordering.controller;
 
 import com.foodordering.model.Restaurant;
+import com.foodordering.model.Order;
 import com.foodordering.model.User;
 import com.foodordering.repository.RestaurantRepository;
+import com.foodordering.repository.OrderRepository;
+import com.foodordering.repository.UserRepository;
+import com.foodordering.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,15 @@ public class RestaurantRestController {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     // 1. Get All or Filtered Restaurants
     @GetMapping
@@ -62,6 +75,9 @@ public class RestaurantRestController {
         }
 
         return restaurantRepository.findById(id).map(r -> {
+            boolean timingChanged = !r.getOpeningTime().equalsIgnoreCase(updated.getOpeningTime()) 
+                                 || !r.getClosingTime().equalsIgnoreCase(updated.getClosingTime());
+
             r.setRestaurantName(updated.getRestaurantName());
             r.setOwnerName(updated.getOwnerName());
             r.setEmail(updated.getEmail());
@@ -72,7 +88,42 @@ public class RestaurantRestController {
             r.setClosingTime(updated.getClosingTime());
             r.setRating(updated.getRating());
             r.setImageUrl(updated.getImageUrl());
-            return ResponseEntity.ok(restaurantRepository.save(r));
+            
+            if (updated.getDescription() != null) {
+                r.setDescription(updated.getDescription());
+            }
+            if (updated.getIsOpen() != null) {
+                r.setIsOpen(updated.getIsOpen());
+            }
+
+            Restaurant saved = restaurantRepository.save(r);
+
+            if (timingChanged) {
+                try {
+                    List<Order> activeOrders = orderRepository.findByRestaurantId(id);
+                    for (Order order : activeOrders) {
+                        if (java.util.Arrays.asList("Pending", "Accepted", "Preparing", "Ready").contains(order.getOrderStatus())) {
+                            userRepository.findById(order.getUserId()).ifPresent(user -> {
+                                String emailSubject = "Important timing updates for your Dine-In reservation at " + saved.getRestaurantName();
+                                String emailBody = "Hello " + user.getName() + ",\n\n"
+                                        + "Please be informed that the operating hours for " + saved.getRestaurantName() 
+                                        + " have been changed by the administration.\n\n"
+                                        + "New Opening Time: " + saved.getOpeningTime() + "\n"
+                                        + "New Closing Time: " + saved.getClosingTime() + "\n\n"
+                                        + "Your reservation #" + order.getId() + " is scheduled for " 
+                                        + order.getArrivalDate() + " at " + order.getArrivalTime() + ".\n"
+                                        + "Kindly review your reservation details. If you need to make changes, please visit your dashboard.\n\n"
+                                        + "Thank you for choosing DineEase!";
+                                emailService.sendEmail(user.getEmail(), emailSubject, emailBody);
+                            });
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("Failed to send timing update emails: " + e.getMessage());
+                }
+            }
+
+            return ResponseEntity.ok(saved);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

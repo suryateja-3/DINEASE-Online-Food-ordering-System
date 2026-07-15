@@ -13,56 +13,67 @@ public class ViewController {
 
     @GetMapping("/login-page")
     public String loginPage() {
-        return "login";
+        return "index";
     }
 
     @GetMapping("/register-page")
     public String registerPage() {
-        return "register";
+        return "index";
     }
 
     @GetMapping("/restaurants-page")
     public String restaurantsPage() {
-        return "restaurants";
+        return "index";
     }
 
     @GetMapping("/restaurant-details-page")
     public String restaurantDetailsPage() {
-        return "restaurant_details";
+        return "index";
     }
 
     @GetMapping("/menu-page")
     public String menuPage() {
-        return "menu";
+        return "index";
     }
 
     @GetMapping("/cart-page")
     public String cartPage() {
-        return "cart";
+        return "index";
     }
 
     @GetMapping("/checkout-page")
     public String checkoutPage() {
-        return "checkout";
+        return "index";
     }
 
     @GetMapping("/payment-page")
     public String paymentPage() {
-        return "payment";
+        return "index";
     }
 
     @GetMapping("/orders-page")
     public String ordersPage() {
-        return "orders";
+        return "index";
     }
 
     @GetMapping("/profile-page")
     public String profilePage() {
-        return "profile";
+        return "index";
     }
 
     @GetMapping("/admin-page")
     public String adminPage() {
-        return "admin";
+        return "index";
+    }
+
+    @GetMapping("/admin-login")
+    public String adminLoginPage() {
+        return "index";
+    }
+
+    @GetMapping("/wallet-page")
+    public String walletPage() {
+        return "index";
     }
 }
+

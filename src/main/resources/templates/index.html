@@ -1,111 +1,17 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DineEase - Dine-In Pre-Ordering System</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/home.css}">
-    <link rel="stylesheet" th:href="@{/css/restaurant.css}">
-</head>
-<body>
-
-    <!-- Header Navigation -->
-    <div th:replace="~{navbar :: navbar}"></div>
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-content">
-            <span class="hero-tagline">No Waiting. Just Dining.</span>
-            <h1 class="hero-title">Order Food Online & Pre-Book Your Dine-In Table</h1>
-            <p class="hero-description">
-                Browse partner restaurants, customize your order, choose your arrival time, and pay online. Your hot meals will be freshly prepared and ready exactly when you step inside the restaurant.
-            </p>
-            <div class="hero-buttons">
-                <a href="/restaurants-page" class="btn btn-primary">Browse Restaurants</a>
-                <a href="/register-page" class="btn btn-secondary">Create Account</a>
-            </div>
-        </div>
-    </section>
-
-    <main class="container">
-        <!-- Features List Section -->
-        <section class="features-section">
-            <div class="section-title-container">
-                <h2 class="section-title">How DineEase Works</h2>
-                <p class="section-subtitle">Save up to 45 minutes of waiting time in four simple steps</p>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem;">
-                <div class="feature-card">
-                    <span class="feature-icon">🔍</span>
-                    <h3 class="feature-title">1. Choose Restaurant</h3>
-                    <p class="feature-desc">Select from premium local partner restaurants based on cuisine or distance.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">🍔</span>
-                    <h3 class="feature-title">2. Select Dishes</h3>
-                    <p class="feature-desc">Add delicious food items to your cart, check preparation times and stock.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">⏰</span>
-                    <h3 class="feature-title">3. Book Table & Time</h3>
-                    <p class="feature-desc">Enter your arrival date, time, and number of guests for custom preparation.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">💳</span>
-                    <h3 class="feature-title">4. Arrive & Eat</h3>
-                    <p class="feature-desc">Walk in, sit down, and enjoy freshly cooked meals ready on your table.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Search & Quick Navigation -->
-        <section class="section-title-container" style="margin-top: 5rem;">
-            <h2 class="section-title">Explore Restaurants Nearby</h2>
-            <p class="section-subtitle">Browse partner tables available today</p>
-            <br>
-            <div style="display: flex; justify-content: center;">
-                <a href="/restaurants-page" class="btn btn-primary">View Restaurants List & Search</a>
-            </div>
-        </section>
-
-        <!-- Customer Reviews -->
-        <section style="margin-top: 5rem;">
-            <div class="section-title-container">
-                <h2 class="section-title">What Our Foodies Say</h2>
-                <p class="section-subtitle">Read reviews from real diners who skipped the line</p>
-            </div>
-            
-            <div class="reviews-container">
-                <div class="review-card">
-                    <div class="review-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="review-text">"Pre-ordered lunch before leaving office. Walking in and finding our starters waiting on the table was amazing! A total game-changer for office breaks."</p>
-                    <div class="review-author">- Surya Prakash, Software Engineer</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="review-text">"Booked for 6 people on Sunday. We arrived and food was served within 5 minutes. Kids didn't have to wait. Staff was extremely cooperative."</p>
-                    <div class="review-author">- Neha Sharma, Business Analyst</div>
-                </div>
-                <div class="review-card">
-                    <div class="review-rating">⭐⭐⭐⭐⭐</div>
-                    <p class="review-text">"Great interface. It showed prep time was 25 mins, we timed our drive perfectly. Everything was fresh and piping hot. Strongly recommended!"</p>
-                    <div class="review-author">- Rajesh Kumar, Sales Lead</div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <div th:replace="~{footer :: footer}"></div>
-
-    <!-- Scripts -->
-    <script th:src="@{/js/auth.js}"></script>
-</body>
+    <script type="module" crossorigin src="/assets/index.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>

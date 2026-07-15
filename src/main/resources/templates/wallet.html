@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wallet & Rewards - DineEase</title>
+    <meta name="description" content="View your DineEase wallet balance, transaction history, referral code, and available coupons.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <style>
+        .wallet-hero {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.4);
+        }
+        .wallet-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 50%;
+        }
+        .wallet-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            right: 20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        .wallet-balance-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 0.5rem 0;
+            letter-spacing: -1px;
+        }
+        .wallet-balance-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.75);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .wallet-card-chip {
+            width: 45px;
+            height: 34px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+        .tabs-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255,255,255,0.04);
+            padding: 0.4rem;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 0.65rem 1rem;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(79,70,229,0.4);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tx-list { display: flex; flex-direction: column; gap: 0.6rem; }
+        .tx-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .tx-item:hover { background: rgba(255,255,255,0.07); }
+        .tx-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .tx-credit { background: rgba(34,197,94,0.15); }
+        .tx-debit { background: rgba(239,68,68,0.15); }
+        .tx-amount-credit { color: #22c55e; font-weight: 700; font-size: 1.05rem; }
+        .tx-amount-debit { color: #ef4444; font-weight: 700; font-size: 1.05rem; }
+        .coupon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+        .coupon-card {
+            background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(124,58,237,0.1));
+            border: 1px solid rgba(99,102,241,0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .coupon-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(99,102,241,0.2); }
+        .coupon-card.used { opacity: 0.5; filter: grayscale(0.5); }
+        .coupon-code {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #818cf8;
+        }
+        .coupon-badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            background: rgba(34,197,94,0.15);
+            color: #22c55e;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .coupon-badge.used-badge { background: rgba(156,163,175,0.2); color: #9ca3af; }
+        .referral-box {
+            background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(245,158,11,0.05));
+            border: 1px solid rgba(251,191,36,0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .referral-code-display {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #fbbf24;
+            padding: 0.75rem 1.5rem;
+            background: rgba(251,191,36,0.1);
+            border: 2px dashed rgba(251,191,36,0.4);
+            border-radius: 12px;
+            display: inline-block;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .referral-code-display:hover { background: rgba(251,191,36,0.18); }
+        .stat-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 1rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            font-size: 0.82rem;
+            margin: 0.25rem;
+        }
+        .empty-state { text-align: center; padding: 3rem 1rem; opacity: 0.6; }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 0.75rem; }
+    </style>
+</head>
+<body>
+
+    <div th:replace="~{navbar :: navbar}"></div>
+
+    <main class="container" style="max-width: 800px; padding: 2rem 1rem;">
+
+        <!-- Wallet Hero Card -->
+        <div class="wallet-hero animate-fade-in">
+            <div class="wallet-card-chip"></div>
+            <p class="wallet-balance-label">Available Balance</p>
+            <p class="wallet-balance-amount" id="walletHeroAmount">Loading...</p>
+            <p style="color: rgba(255,255,255,0.7); margin: 0; font-size: 0.9rem;">DineEase Digital Wallet &bull; <span id="walletUserName">--</span></p>
+            <div style="position: absolute; top: 1.5rem; right: 1.5rem; opacity: 0.5; font-size: 2rem;">💳</div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab('transactions', this)">📋 Transactions</button>
+            <button class="tab-btn" onclick="switchTab('coupons', this)">🏷️ Coupons</button>
+            <button class="tab-btn" onclick="switchTab('referral', this)">🔗 Referral</button>
+        </div>
+
+        <!-- TRANSACTIONS TAB -->
+        <div id="tab-transactions" class="tab-content active glass-card">
+            <h2 style="margin: 0 0 1.25rem; font-size: 1.1rem;">Transaction History</h2>
+            <div id="transactionList" class="tx-list">
+                <div class="empty-state"><div class="icon">📄</div><p>Loading transactions...</p></div>
+            </div>
+        </div>
+
+        <!-- COUPONS TAB -->
+        <div id="tab-coupons" class="tab-content glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+                <h2 style="margin: 0; font-size: 1.1rem;">My Coupons</h2>
+                <span style="font-size: 0.82rem; opacity: 0.6;">Use at checkout to save on your orders</span>
+            </div>
+            <div id="couponGrid" class="coupon-grid">
+                <div class="empty-state"><div class="icon">🏷️</div><p>Loading coupons...</p></div>
+            </div>
+        </div>
+
+        <!-- REFERRAL TAB -->
+        <div id="tab-referral" class="tab-content glass-card">
+            <h2 style="margin: 0 0 0.5rem; font-size: 1.1rem;">🔗 Refer & Earn</h2>
+            <p style="opacity: 0.7; font-size: 0.9rem; margin: 0 0 1.5rem;">Invite friends to DineEase. When they complete their first order, you earn <strong style="color:#fbbf24">₹200</strong> in your wallet!</p>
+
+            <div class="referral-box">
+                <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">Your Referral Code</p>
+                <div class="referral-code-display" id="referralCodeDisplay" onclick="copyReferralCode()" title="Click to copy">
+                    Loading...
+                </div>
+                <p style="font-size: 0.8rem; opacity: 0.6; margin: 0.25rem 0 1.25rem;">Click to copy code</p>
+
+                <div id="referralStats" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1rem;"></div>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding: 1.25rem; background: rgba(255,255,255,0.04); border-radius: 14px; border: 1px solid rgba(255,255,255,0.08);">
+                <h3 style="margin: 0 0 1rem; font-size: 0.95rem;">How it works</h3>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <div style="width: 28px; height: 28px; background: rgba(79,70,229,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink:0; color: #818cf8; font-weight: 700;">1</div>
+                        <p style="margin: 0; font-size: 0.9rem;">Share your referral code with friends who haven't signed up on DineEase yet</p>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <div style="width: 28px; height: 28px; background: rgba(79,70,229,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink:0; color: #818cf8; font-weight: 700;">2</div>
+                        <p style="margin: 0; font-size: 0.9rem;">Your friend registers and enters your code in the "Referred By" field</p>
+                    </div>
+                    <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                        <div style="width: 28px; height: 28px; background: rgba(79,70,229,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink:0; color: #818cf8; font-weight: 700;">3</div>
+                        <p style="margin: 0; font-size: 0.9rem;">Once they complete their first order, ₹200 is automatically credited to your wallet!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div th:replace="~{footer :: footer}"></div>
+
+    <script th:src="@{/js/auth.js}"></script>
+    <script th:src="@{/js/wallet.js}"></script>
+</body>
+</html>

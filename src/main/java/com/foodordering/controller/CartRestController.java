@@ -43,8 +43,17 @@ public class CartRestController {
             }
         }
 
-        // Aggregate quantity if item is already in cart
-        Optional<CartItem> existingItemOpt = cartItemRepository.findByUserIdAndFoodItemId(item.getUserId(), item.getFoodItemId());
+        // Aggregate quantity if item is already in cart with same customizations
+        List<CartItem> existingItems = cartItemRepository.findByUserId(item.getUserId());
+        Optional<CartItem> existingItemOpt = existingItems.stream()
+                .filter(i -> i.getFoodItemId().equals(item.getFoodItemId()))
+                .filter(i -> {
+                    String c1 = i.getCustomizations() != null ? i.getCustomizations().trim() : "";
+                    String c2 = item.getCustomizations() != null ? item.getCustomizations().trim() : "";
+                    return c1.equalsIgnoreCase(c2);
+                })
+                .findFirst();
+
         if (existingItemOpt.isPresent()) {
             CartItem existing = existingItemOpt.get();
             int newQty = existing.getQuantity() + item.getQuantity();

@@ -32,4 +32,30 @@ public class Order {
     private String itemsText; // list of ordered items (e.g. "Burgers x2, Soda x1")
 
     private Integer estimatedPreparationTime = 15; // in minutes
+
+    private Long tableId;
+    private String tableNumber;
+    private String tableType;
+
+    // Cancellation & No-Show Policy Fields
+    private String cancellationTime;
+    private Double cancellationFee = 0.0;
+    private Double noShowPenalty = 0.0;
+    private String paymentType;
+    private String reservationStatus = "Pending";
+    private Integer guestsCount = 1;
+    private Boolean penaltyWaived = false;
+
+    // Coupon & Wallet Tracking Fields
+    private String appliedCouponCode;
+    private Double couponDiscount = 0.0;
+    private Double walletDiscountUsed = 0.0;
+
+    // Kitchen Scheduling System Timestamps
+    private java.time.LocalDateTime orderTime;
+    private java.time.LocalDateTime acceptedTime;
+    private java.time.LocalDateTime preparationStartTime;
+    private java.time.LocalDateTime readyTime;
+    private java.time.LocalDateTime completedTime;
+    private Integer totalPreparationTime;
 }

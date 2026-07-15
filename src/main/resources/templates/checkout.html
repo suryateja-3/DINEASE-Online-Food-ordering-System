@@ -65,7 +65,46 @@
                         Loading booking summary...
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1.05rem;">Confirm Dine-In & Pay</button>
+                    <!-- Coupon Section -->
+                    <div class="glass-card" style="margin-top: 1.5rem; padding: 1.25rem; border: 1px solid rgba(255,165,0,0.3); background: rgba(255,165,0,0.05);">
+                        <h3 style="margin: 0 0 1rem; font-size: 1rem; color: var(--accent-color, #f97316);">🏷️ Apply Coupon</h3>
+                        <div style="display: flex; gap: 0.75rem; align-items: flex-end;">
+                            <div class="form-group" style="flex: 1; margin: 0;">
+                                <input type="text" id="couponCodeInput" class="form-input" placeholder="Enter coupon code (e.g. NEWUSER25)" style="text-transform: uppercase;">
+                            </div>
+                            <button type="button" id="applyCouponBtn" class="btn btn-secondary" style="padding: 0.65rem 1.25rem; white-space: nowrap;">Apply</button>
+                            <button type="button" id="removeCouponBtn" class="btn" style="padding: 0.65rem 1rem; display: none; background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3);">✕ Remove</button>
+                        </div>
+                        <div id="couponMessage" style="margin-top: 0.75rem; font-size: 0.9rem; display: none;"></div>
+                    </div>
+
+                    <!-- Wallet Section -->
+                    <div class="glass-card" id="walletSection" style="margin-top: 1rem; padding: 1.25rem; border: 1px solid rgba(99,102,241,0.3); background: rgba(99,102,241,0.05); display: none;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                            <div>
+                                <h3 style="margin: 0; font-size: 1rem; color: #818cf8;">💜 Digital Wallet</h3>
+                                <p style="margin: 0.25rem 0 0; font-size: 0.85rem; opacity: 0.8;">Available: <strong id="walletBalanceDisplay">₹0.00</strong></p>
+                            </div>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem;">
+                                <input type="checkbox" id="useWalletCheckbox" style="width: 1.1rem; height: 1.1rem; accent-color: #818cf8;">
+                                Use wallet balance
+                            </label>
+                        </div>
+                        <div id="walletApplyInfo" style="margin-top: 0.75rem; font-size: 0.9rem; color: #818cf8; display: none;"></div>
+                    </div>
+
+                    <!-- Payment Summary -->
+                    <div id="paymentBreakdown" style="margin-top: 1.25rem; padding: 1rem; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); display: none;">
+                        <h3 style="margin: 0 0 0.75rem; font-size: 0.95rem; opacity: 0.8;">💳 Payment Breakdown</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9rem;">
+                            <div style="display: flex; justify-content: space-between;"><span>Subtotal</span><span id="bd_subtotal">₹0.00</span></div>
+                            <div id="bd_coupon_row" style="display: flex; justify-content: space-between; color: #22c55e; display: none;"><span>Coupon Discount</span><span id="bd_coupon">-₹0.00</span></div>
+                            <div id="bd_wallet_row" style="display: flex; justify-content: space-between; color: #818cf8; display: none;"><span>Wallet Applied</span><span id="bd_wallet">-₹0.00</span></div>
+                            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.05rem; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 0.5rem; margin-top: 0.25rem;"><span>You Pay</span><span id="bd_total" style="color: var(--primary-color, #f97316);">₹0.00</span></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem; font-size: 1.05rem; margin-top: 1.5rem;">Confirm Dine-In & Pay</button>
                 </form>
             </div>
         </div>

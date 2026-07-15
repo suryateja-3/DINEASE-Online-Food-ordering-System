@@ -30,4 +30,9 @@ public class Restaurant {
 
     @Column(length = 1000)
     private String imageUrl;
+
+    @Column(length = 1000)
+    private String description = "Delicious food served hot and fresh.";
+
+    private Boolean isOpen = true;
 }

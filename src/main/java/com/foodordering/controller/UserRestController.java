@@ -20,6 +20,15 @@ public class UserRestController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private com.foodordering.repository.WalletTransactionRepository walletTransactionRepository;
+
+    @Autowired
+    private com.foodordering.repository.UserCouponRepository userCouponRepository;
+
+    @Autowired
+    private com.foodordering.repository.CouponRepository couponRepository;
+
     // 1. Get All Users (Admin Feature)
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers(HttpServletRequest request) {
@@ -31,7 +40,6 @@ public class UserRestController {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
-    // 2. Register New User
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
@@ -40,13 +48,36 @@ public class UserRestController {
         if (userRepository.findByEmail(user.getEmail().trim()).isPresent()) {
             return ResponseEntity.badRequest().body("Email already registered!");
         }
+
+        // Validate referredByCode if provided
+        if (user.getReferredByCode() != null && !user.getReferredByCode().trim().isEmpty()) {
+            String refCode = user.getReferredByCode().trim();
+            if (userRepository.findByReferralCode(refCode).isEmpty()) {
+                return ResponseEntity.badRequest().body("Invalid referral code. Please check and try again.");
+            }
+            user.setReferredByCode(refCode);
+        }
         
         user.setEmail(user.getEmail().trim());
         if (user.getRole() == null || user.getRole().trim().isEmpty()) {
             user.setRole("USER");
         }
+        user.setWalletBalance(0.0);
+        user.setFirstOrderCompleted(false);
+        user.setTotalPenalty(0.0);
+        user.setSuspended(false);
+
         User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(savedUser);
+
+        // Generate and save unique referral code
+        String namePart = savedUser.getName() != null ? savedUser.getName().replaceAll("\\s+", "").toUpperCase() : "USER";
+        if (namePart.length() > 4) {
+            namePart = namePart.substring(0, 4);
+        }
+        savedUser.setReferralCode("REF-" + savedUser.getId() + "-" + namePart);
+        User finalUser = userRepository.save(savedUser);
+
+        return ResponseEntity.ok(finalUser);
     }
 
     // 3. User Login
@@ -62,6 +93,9 @@ public class UserRestController {
         Optional<User> userOpt = userRepository.findByEmail(email.trim());
         if (userOpt.isPresent()) {
             User user = userOpt.get();
+            if (Boolean.TRUE.equals(user.getSuspended())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Your account has been suspended by the administrator.");
+            }
             if (user.getPassword().equals(password)) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("currentUser", user);
@@ -123,6 +157,102 @@ public class UserRestController {
                 session.setAttribute("currentUser", saved);
             }
             return ResponseEntity.ok(saved);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+    // 8. Suspend User (Admin)
+    @PutMapping("/{id}/suspend")
+    public ResponseEntity<?> suspendUser(@PathVariable Long id, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User currentUser = (session != null) ? (User) session.getAttribute("currentUser") : null;
+        if (currentUser == null || !"ADMIN".equalsIgnoreCase(currentUser.getRole())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin privilege required.");
+        }
+        return userRepository.findById(id).map(user -> {
+            if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+                return ResponseEntity.badRequest().body("Cannot suspend admin accounts.");
+            }
+            user.setSuspended(true);
+            userRepository.save(user);
+            return ResponseEntity.ok().body("User suspended successfully.");
+        }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // 9. Reactivate User (Admin)
+    @PutMapping("/{id}/reactivate")
+    public ResponseEntity<?> reactivateUser(@PathVariable Long id, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User currentUser = (session != null) ? (User) session.getAttribute("currentUser") : null;
+        if (currentUser == null || !"ADMIN".equalsIgnoreCase(currentUser.getRole())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin privilege required.");
+        }
+        return userRepository.findById(id).map(user -> {
+            user.setSuspended(false);
+            userRepository.save(user);
+            return ResponseEntity.ok().body("User reactivated successfully.");
+        }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/wallet")
+    public ResponseEntity<?> getWallet(@PathVariable Long id) {
+        return userRepository.findById(id).map(user -> {
+            List<com.foodordering.model.WalletTransaction> txs = walletTransactionRepository.findByUserId(id);
+            txs.sort((a, b) -> b.getId().compareTo(a.getId()));
+            return ResponseEntity.ok(Map.of(
+                "walletBalance", user.getWalletBalance() != null ? user.getWalletBalance() : 0.0,
+                "transactions", txs
+            ));
+        }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/coupons")
+    public ResponseEntity<?> getCoupons(@PathVariable Long id) {
+        return userRepository.findById(id).map(user -> {
+            List<com.foodordering.model.UserCoupon> userCoupons = userCouponRepository.findByUserId(id);
+            java.util.List<Map<String, Object>> result = new java.util.ArrayList<>();
+
+            if (user.getFirstOrderCompleted() == null || !user.getFirstOrderCompleted()) {
+                result.add(Map.of(
+                    "code", "NEWUSER25",
+                    "discountPercentage", 25.0,
+                    "maxDiscount", 1000.0,
+                    "expiryDate", java.time.LocalDate.now().plusDays(30).toString(),
+                    "used", false,
+                    "minOrderAmount", 0.0,
+                    "description", "25% Off on your first order!",
+                    "type", "NEW_USER"
+                ));
+            }
+
+            for (com.foodordering.model.UserCoupon uc : userCoupons) {
+                Optional<com.foodordering.model.Coupon> optC = couponRepository.findByCode(uc.getCouponCode());
+                if (optC.isPresent()) {
+                    com.foodordering.model.Coupon c = optC.get();
+                    result.add(Map.of(
+                        "code", c.getCode(),
+                        "discountPercentage", c.getDiscountPercentage(),
+                        "maxDiscount", c.getMaxDiscount(),
+                        "expiryDate", uc.getExpiryDate().toString(),
+                        "used", uc.getUsed(),
+                        "minOrderAmount", c.getMinOrderAmount(),
+                        "description", c.getType() + " Reward Coupon",
+                        "type", c.getType()
+                    ));
+                } else {
+                    result.add(Map.of(
+                        "code", uc.getCouponCode(),
+                        "discountPercentage", 10.0,
+                        "maxDiscount", 200.0,
+                        "expiryDate", uc.getExpiryDate().toString(),
+                        "used", uc.getUsed(),
+                        "minOrderAmount", 0.0,
+                        "description", "Reward Coupon",
+                        "type", "STANDARD"
+                    ));
+                }
+            }
+            return ResponseEntity.ok(result);
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
