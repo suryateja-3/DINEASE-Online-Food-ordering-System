@@ -1,8 +1,9 @@
-# 🍽️ DineEase – Online Food Ordering System
+# 🍽️ DineEase – Smart Dine-In Pre-Ordering & Online Food Ordering System
 
 <p align="center">
   <img src="https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=openjdk">
   <img src="https://img.shields.io/badge/Spring_Boot-3.x-brightgreen?style=for-the-badge&logo=springboot">
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black">
   <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf">
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
@@ -11,44 +12,106 @@
 </p>
 
 <p align="center">
-A modern full-stack food ordering platform designed to deliver a seamless digital dining experience.
+A modern full-stack restaurant platform that transforms traditional dining with Smart Dine-In Pre-Ordering, digital payments, rewards, and intelligent restaurant management.
 </p>
 
 ---
 
-## 📖 Overview
+# 📖 Overview
 
-**DineEase** is a full-stack **Online Food Ordering System** developed using **Spring Boot**, **Thymeleaf**, **MySQL**, **HTML**, **CSS**, and **JavaScript**.
+**DineEase** is a full-stack **Smart Dine-In Pre-Ordering & Online Food Ordering System** developed using **Spring Boot, React, Thymeleaf, MySQL, HTML, CSS, and JavaScript**.
 
-The platform enables users to discover restaurants, browse menus, manage their cart, securely place orders, and complete online payments through a responsive and intuitive interface.
+Unlike traditional food ordering applications, DineEase allows customers to **schedule food before reaching the restaurant**, ensuring meals are freshly prepared and ready exactly at the selected arrival time.
 
-🚀 The project is currently being enhanced with an innovative **Dine-In Pre-Ordering** feature, allowing customers to place orders before arriving at the restaurant, significantly reducing waiting time and improving the dining experience.
+The platform also provides secure online payments, wallet management, coupons, referrals, reviews, table reservations, and a complete admin dashboard for restaurant management.
 
 ---
 
 # ✨ Features
 
-- 🍔 Restaurant browsing
-- 📋 Interactive food menu
-- 🛒 Shopping cart management
-- 💳 Online payment integration
-- 📦 Order placement
-- 📱 Responsive UI
-- 🔐 Secure backend architecture
-- ⚡ Fast and user-friendly experience
-- 🍽️ Dine-In Pre-Ordering *(Upcoming Feature)*
+- 🍽️ Smart Dine-In Pre-Ordering
+- 🏪 Restaurant Browsing & Search
+- 📋 Interactive Digital Menu
+- 🪑 Table Reservation
+- 🛒 Smart Shopping Cart
+- 💳 Online & Pay-at-Restaurant Payment
+- 💼 Digital Wallet
+- 🎁 Coupons & Monthly Discounts
+- 👥 Referral Reward System
+- ⭐ Ratings & Reviews
+- ❤️ Favorite Restaurants
+- 📦 Smart Order Status Tracking
+- 📧 Email Notifications
+- 👨‍💼 Admin Dashboard
+- 🔐 Secure Login & Session Management
+- 📱 Fully Responsive User Interface
+
+---
+
+# 🚀 Smart Dine-In Experience
+
+- Select your restaurant and arrival time.
+- Place your order before reaching the restaurant.
+- Orders are automatically accepted.
+- Food preparation begins based on preparation time.
+- Meals are ready exactly when customers arrive.
+- Live order progress:
+  - 📝 Order Placed
+  - ✅ Accepted
+  - 👨‍🍳 Preparing
+  - 🍽️ Ready to Serve
+  - ✔️ Completed
+
+---
+
+# 💼 Wallet & Rewards
+
+- 💰 Built-in Wallet
+- 🎉 25% Discount on First Order
+- 🎁 Monthly 10% Discount for Every User
+- 👑 Monthly Premium Coupon (up to 40%)
+- 👥 Refer & Earn up to ₹200 Wallet Credit
+- 💳 Wallet Balance can be used for future orders
+
+---
+
+# ⏰ Cancellation & No-Show Policy
+
+- ✏️ Edit orders up to **1 hour 30 minutes** before arrival.
+- ❌ Free cancellation before the cancellation window.
+- ⚠️ Late cancellation charges apply for last-minute cancellations.
+- ⌛ 1-hour grace period after selected arrival time.
+- 💰 Up to **20% No-Show Penalty** for Pay-at-Restaurant orders if customers fail to arrive before restaurant closing time.
+
+---
+
+# 👨‍💼 Admin Features
+
+- Restaurant Management
+- Food Menu Management
+- Coupon Management
+- Order Verification
+- Restaurant Timing Management
+- Table Management
+- Customer Management
+- Wallet Monitoring
+- Review Moderation
+- Email Notifications
+- Dashboard Analytics
 
 ---
 
 # 🛠️ Tech Stack
 
 ## Backend
-- Java
+- Java 17
 - Spring Boot
 - Spring MVC
 - Spring Data JPA
+- Hibernate
 
 ## Frontend
+- React
 - Thymeleaf
 - HTML5
 - CSS3
@@ -64,8 +127,10 @@ The platform enables users to discover restaurants, browse menus, manage their c
 
 # 📂 Project Structure
 
-```
+```text
 Online-Food-Ordering-System
+│
+├── frontend/                 # React Frontend
 │
 ├── src
 │   ├── main
@@ -105,10 +170,18 @@ spring.datasource.username=your_username
 spring.datasource.password=your_password
 ```
 
-### Run the Application
+### Run Backend
 
 ```bash
 mvn spring-boot:run
+```
+
+### Run React Frontend
+
+```bash
+cd frontend
+npm install
+npm start
 ```
 
 Visit:
@@ -121,38 +194,40 @@ http://localhost:8080
 
 # 📸 Screenshots
 
-> Add screenshots here after completing the project.
+> Add screenshots after completing the project.
 
-- Home Page
-- Restaurant Listing
-- Food Menu
-- Cart
-- Checkout
-- Payment
-- Orders
+- 🏠 Home
+- 🍽️ Restaurant Listing
+- 📋 Menu
+- 🪑 Table Reservation
+- 🛒 Cart
+- 💳 Checkout
+- 💼 Wallet
+- 🎁 Coupons
+- ⭐ Reviews
+- 👨‍💼 Admin Dashboard
+- 📦 Order Tracking
 
 ---
 
-# 🌟 Upcoming Features
+# 🌟 Future Enhancements
 
-- 🍽️ Dine-In Pre-Ordering
-- 📍 Live Order Tracking
-- ❤️ Wishlist
-- ⭐ Ratings & Reviews
-- 🔔 Real-Time Notifications
-- 🎁 Coupon System
-- 📊 Admin Dashboard
-- 📱 Mobile Responsive Enhancements
+- 🤖 AI Food Recommendations
+- 📍 Live GPS Navigation
+- 🔔 Push Notifications
+- 📊 Restaurant Analytics Dashboard
+- 📱 Android & iOS Mobile App
+- 🌍 Multi-Language Support
+- 📈 Sales Reports & Insights
+- 🤝 Loyalty Membership Program
 
 ---
 
 # 💡 Why DineEase?
 
-Unlike traditional food ordering systems, **DineEase** aims to bridge the gap between online ordering and in-restaurant dining by introducing **Dine-In Pre-Ordering**, enabling customers to order meals before arriving, reducing queues and improving service efficiency.
+Unlike traditional food ordering applications, **DineEase** introduces **Smart Dine-In Pre-Ordering**, allowing customers to pre-order meals before arriving at the restaurant. Combined with table reservations, wallet payments, coupons, referrals, automated order scheduling, and an admin management system, it delivers a faster, smarter, and more convenient dining experience.
 
 ---
-
-
 
 # ⭐ Support
 
@@ -161,5 +236,5 @@ If you found this project helpful, don't forget to **Star ⭐ the repository** a
 ---
 
 <p align="center">
-Made with ❤️ using Spring Boot, Thymeleaf, MySQL, HTML, CSS & JavaScript
+Made with ❤️ using Java, Spring Boot, React, Thymeleaf, MySQL, HTML, CSS & JavaScript
 </p>
